@@ -58,7 +58,7 @@ export class ProjectListComponent implements AfterViewChecked, OnInit, OnDestroy
     }
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
     this.userId = +this.auth.getCurrentUserId();
     this.route.params.subscribe(
       params => {
@@ -81,9 +81,17 @@ export class ProjectListComponent implements AfterViewChecked, OnInit, OnDestroy
       }
     });
   }
-
-  getProjects(): void {
-
+  
+  resetFilterForm():void{
+    
+    this.filterForm.reset();
+  }
+  
+  getProjects(): void {    
+    
+    //Issue#300 - this call is to resets any filter criteria before realoding the component to display all items
+    this.resetFilterForm();
+    
     if (this.from === 'opportunities') {
       this.projectsSubscription = this.projectService.getActiveProjects().subscribe(
         res => this.projects = res,
